@@ -1,6 +1,6 @@
 from rest_framework.mixins import (
     CreateModelMixin,
-    DeleteModelMixin,
+    DestroyModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
 )
@@ -13,7 +13,7 @@ from apps.tables.serializers import EntrySerializer
 class EntryViewSet(RetrieveModelMixin,
                    ListModelMixin,
                    CreateModelMixin,
-                   DeleteModelMixin,
+                   DestroyModelMixin,
                    GenericViewSet):
     """
     """

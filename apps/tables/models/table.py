@@ -1,9 +1,10 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
 class Table(models.Model):
     table_name = models.CharField(max_length=100, unique=True, db_index=True)
-    fields = models.JSONField()
+    fields = JSONField()
 
     class Meta:
         verbose_name = 'table'

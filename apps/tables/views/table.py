@@ -1,6 +1,6 @@
 from rest_framework.mixins import (
     CreateModelMixin,
-    DeleteModelMixin,
+    DestroyModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
 )
@@ -14,7 +14,7 @@ from apps.tables.views.filters import TableFilter
 class TableViewSet(RetrieveModelMixin,
                    ListModelMixin,
                    CreateModelMixin,
-                   DeleteModelMixin,
+                   DestroyModelMixin,
                    GenericViewSet):
     """
     """

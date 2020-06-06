@@ -1,6 +1,6 @@
 from rest_framework.serializers import CharField, Serializer
 
-from apps.profiles.serializers import UserSerializer
+from apps.users.serializers import UserSerializer
 
 
 class JWTSerializer(Serializer):
