@@ -65,7 +65,7 @@ class TableTestCase(APITestCase):
     def test_read_list_user(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.get(self.table_url)
+        response = self.client.get(self.table_list_url)
         assert response.status_code == status.HTTP_200_OK
 
     def test_create_anon(self):
