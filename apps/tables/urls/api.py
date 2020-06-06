@@ -15,5 +15,10 @@ urlpatterns = [
         views.EntriesByTableList.as_view(),
         name='entry-list'
     ),
+    path(
+        "tables/<str:table_name>/query/",
+        views.QueryTableView.as_view(),
+        name='entry-query'
+    ),
     path("", include(router.urls))
 ]

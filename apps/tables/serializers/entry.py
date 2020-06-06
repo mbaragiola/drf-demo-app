@@ -12,6 +12,8 @@ class EntrySerializer(ModelSerializer):
             'table': {'read_only': True},
         }
 
+    # TODO: Validation could be added here.
+
     def create(self, validated_data):
         validated_data['table'] = Table.objects.get(
             table_name=self.context.get('table_name')

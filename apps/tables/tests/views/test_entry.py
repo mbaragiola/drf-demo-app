@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from apps.tables.models import Table
+from apps.tables.models import Entry, Table
 from apps.users.tests.factories import UserFactory
 
 
@@ -30,6 +30,24 @@ class EntryTestCase(APITestCase):
                 }
             }
         )
+        cls.entry_1 = Entry.objects.create(
+            table=cls.table,
+            data={
+                'title': 'Title One',
+                'release_date': '2019-02-02',
+                'director': 2,
+                'imdb_ranking': 6.5
+            }
+        )
+        cls.entry_2 = Entry.objects.create(
+            table=cls.table,
+            data={
+                'title': 'Title Two',
+                'release_date': '2019-03-02',
+                'director': 3,
+                'imdb_ranking': 9.0
+            }
+        )
 
         cls.valid_data = {
             'title': 'The Title',
@@ -39,6 +57,7 @@ class EntryTestCase(APITestCase):
         }
 
         cls.entry_list_url = reverse('api:tables:entry-list', args=[cls.table.table_name])
+        cls.entry_query_url = reverse('api:tables:entry-query', args=[cls.table.table_name])
 
     def test_read_list_anon(self):
         self.client.logout()
@@ -51,6 +70,15 @@ class EntryTestCase(APITestCase):
 
         response = self.client.get(self.entry_list_url)
         assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 2
+
+    def test_query_user(self):
+        self.client.force_authenticate(user=self.user)
+        data = {'title': 'Title One'}
+
+        response = self.client.post(self.entry_query_url, data)
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
 
     def test_create_anon(self):
         self.client.logout()
@@ -64,3 +92,4 @@ class EntryTestCase(APITestCase):
         response = self.client.post(self.entry_list_url, self.valid_data, format='json')
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data['table'] == self.table.pk
+        assert response.data['data'] == self.valid_data

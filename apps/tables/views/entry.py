@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.tables.models import Entry
 from apps.tables.serializers import EntrySerializer
@@ -26,3 +27,14 @@ class EntriesByTableList(ListCreateAPIView):
         context = super(EntriesByTableList, self).get_serializer_context()
         context['table_name'] = self.kwargs.get('table_name')
         return context
+
+
+class QueryTableView(APIView):
+
+    def post(self, request, table_name=None):
+        queryset = Entry.objects.filter(
+            table__table_name=table_name,
+            data__contains=request.data
+        )
+        serializer = EntrySerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -8,3 +8,5 @@ class TableSerializer(ModelSerializer):
     class Meta:
         model = Table
         fields = ['table_name', 'fields', ]
+
+    # TODO: Validations could be added here.
