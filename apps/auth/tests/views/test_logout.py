@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from apps.profiles.tests.factories import UserFactory
+from apps.users.tests.factories import UserFactory
 
 
 class LogoutTestCase(APITestCase):
@@ -12,9 +12,9 @@ class LogoutTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = UserFactory()
-        cls.logout_url = reverse('api-v1:auth:logout-alldevices')
-        cls.logout_cookie_url = reverse('api-v1:auth:logout-cookie')
-        cls.logout_token_url = reverse('api-v1:auth:logout-token')
+        cls.logout_url = reverse('api:auth:logout-alldevices')
+        cls.logout_cookie_url = reverse('api:auth:logout-cookie')
+        cls.logout_token_url = reverse('api:auth:logout-token')
 
     def test_successful(self):
         self.client.force_authenticate(user=self.user)

@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    username = serializers.CharField()
     password = serializers.CharField()
 
     def authenticate(self, **kwargs):

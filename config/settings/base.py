@@ -297,6 +297,7 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': 'userjwt',
     'JWT_COOKIE_SAMESITE': None
 }
+SECURE_COOKIE = True
 
 # Your stuff...
 # ------------------------------------------------------------------------------

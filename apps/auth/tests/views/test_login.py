@@ -11,7 +11,7 @@ class LoginTestCase(APITestCase):
     """
     @classmethod
     def setUpTestData(cls):
-        cls.login_url = reverse('api-v1:auth:login')
+        cls.login_url = reverse('api:auth:login')
         cls.user = UserFactory()
         cls.user_password = 'Hola.Chau'
         cls.user.set_password(cls.user_password)
