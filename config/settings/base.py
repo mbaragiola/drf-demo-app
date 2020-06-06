@@ -47,7 +47,7 @@ DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
-ROOT_URLCONF = "config.urls"
+ROOT_URLCONF = "config.urls.root"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -302,3 +302,4 @@ JWT_AUTH = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+BACKOFFICE = False
