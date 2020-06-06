@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Table(models.Model):
-    table_name = models.CharField(max_length=100, unique=True, db_index=True)
+    table_name = models.SlugField(unique=True, db_index=True)
     fields = JSONField()
 
     class Meta:

@@ -21,6 +21,7 @@ class TableViewSet(RetrieveModelMixin,
     serializer_class = TableSerializer
     filterset_class = TableFilter
     search_fields = ['table_name_search', ]
+    lookup_field = 'table_name'
 
     def get_queryset(self):
         return Table.objects.all()
