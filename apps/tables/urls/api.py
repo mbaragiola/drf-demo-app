@@ -7,7 +7,6 @@ from apps.tables import views
 router = DefaultRouter()
 
 router.register("tables", views.TableViewSet, basename="table")
-router.register("entries", views.EntryViewSet, basename="entry")
 
 app_name = "tables"
 urlpatterns = [
