@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=drf_demo_app
+POSTGRES_USER=RWqhxVxTXJXBgNcbOVHmBNOyIeGWGdZQ
+POSTGRES_PASSWORD=8IUoPtpSDF766gZ7ORicxf254iPbASpOf9DkZhZAkJqcVzURlYNlhI9TB1jVdchU
