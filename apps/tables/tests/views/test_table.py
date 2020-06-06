@@ -88,3 +88,36 @@ class TableTestCase(APITestCase):
 
         response = self.client.post(self.table_list_url, data, format='json')
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_update_anon(self):
+        self.client.logout()
+
+        response = self.client.put(self.table_url, self.valid_data, format='json')
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+        response = self.client.patch(self.table_url, self.valid_data, format='json')
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_update_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.put(self.table_url, self.valid_data, format='json')
+        assert response.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
+
+        response = self.client.patch(self.table_url, self.valid_data, format='json')
+        assert response.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
+
+    def test_delete_anon(self):
+        self.client.logout()
+
+        response = self.client.delete(self.table_url)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_delete_user(self):
+        self.client.force_authenticate(user=self.user)
+        table = Table.objects.create(table_name='t', fields={'min': 'str'})
+        table_url = reverse('api:tables:table-detail', args=[table.table_name])
+
+        response = self.client.delete(table_url)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Table.objects.filter(table_name='t').exists() is False
