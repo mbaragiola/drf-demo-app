@@ -1,5 +1,6 @@
-import pytest
 from django.test import RequestFactory
+
+import pytest
 
 from drf_demo_app.users.api.views import UserViewSet
 from drf_demo_app.users.models import User

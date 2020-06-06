@@ -12,3 +12,4 @@ django==3.0.7  # pyup: < 3.1  # https://www.djangoproject.com/
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
 # Django REST Framework
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
+djangorestframework-jwt==1.11  # https://github.com/jpadilla/django-rest-framework-jwt

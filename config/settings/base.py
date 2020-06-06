@@ -2,12 +2,13 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# drf_demo_app/
-APPS_DIR = ROOT_DIR / "drf_demo_app"
+# apps/
+APPS_DIR = ROOT_DIR / "apps"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
@@ -64,17 +65,12 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
     "rest_framework",
-    "rest_framework.authtoken",
 ]
 
 LOCAL_APPS = [
-    "drf_demo_app.users.apps.UsersConfig",
-    # Your stuff: custom apps go here
+    "apps.users.apps.UsersConfig",
+    "apps.tables.apps.TablesConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -82,14 +78,13 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "drf_demo_app.contrib.sites.migrations"}
+MIGRATION_MODULES = {"sites": "apps.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -181,7 +176,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "drf_demo_app.utils.context_processors.settings_context",
+                "apps.utils.context_processors.settings_context",
             ],
         },
     }
@@ -189,9 +184,6 @@ TEMPLATES = [
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
-
-# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -252,29 +244,61 @@ LOGGING = {
 }
 
 
-# django-allauth
-# ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "drf_demo_app.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "drf_demo_app.users.adapters.SocialAccountAdapter"
-
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'config.pagination.DefaultPagination',
+    'PAGE_SIZE': 10
 }
+
+# JWT
+JWT_AUTH = {
+    'JWT_ENCODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_encode_handler',
+
+    'JWT_DECODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_decode_handler',
+
+    'JWT_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_payload_handler',
+
+    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_response_payload_handler',
+
+    'JWT_SECRET_KEY': env('DJANGO_SECRET_KEY'),
+    'JWT_GET_USER_SECRET_KEY': None,
+    'JWT_PUBLIC_KEY': None,
+    'JWT_PRIVATE_KEY': None,
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LEEWAY': 0,
+    'JWT_EXPIRATION_DELTA': timedelta(days=90),
+    'JWT_AUDIENCE': None,
+    'JWT_ISSUER': None,
+
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=365),
+
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_COOKIE': 'userjwt',
+    'JWT_COOKIE_SAMESITE': None
+}
+
 # Your stuff...
 # ------------------------------------------------------------------------------

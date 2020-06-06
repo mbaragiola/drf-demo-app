@@ -1,7 +1,8 @@
-import pytest
 from django.contrib.auth.models import AnonymousUser
 from django.http.response import Http404
 from django.test import RequestFactory
+
+import pytest
 
 from drf_demo_app.users.models import User
 from drf_demo_app.users.tests.factories import UserFactory
